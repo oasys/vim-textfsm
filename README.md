@@ -1,5 +1,9 @@
 # vim-textfsm
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
+&copy; 2021 Jason Lavoie
+
 Vim syntax plugin for [TextFSM](https://github.com/google/textfsm)
 template files.  TextFSM is a template-based state machine for parsing
 semi-formatted text files, such as those returned from the CLI of
