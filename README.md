@@ -13,6 +13,16 @@ networking devices.
 
 ![Cisco IOS Show CDP Neighbors](images/cisco_ios_show_cdp_neighbors_detail.textfsm.png)
 
+## Configuration
+
+By default all files with a `.textfsm` extension will have this syntax
+set.  For different a filetype, add something like this to your
+`~/.vimrc`:
+
+```vim
+autocmd BufRead,BufNewFile *.template *.tmpl set filetype=textfsm
+```
+
 ## Installation
 
 ### Pathogen
