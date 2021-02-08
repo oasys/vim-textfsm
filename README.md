@@ -9,6 +9,10 @@ template files.  TextFSM is a template-based state machine for parsing
 semi-formatted text files, such as those returned from the CLI of
 networking devices.
 
+## Screenshots
+
+![Cisco IOS Show CDP Neighbors](images/cisco_ios_show_cdp_neighbors_detail.textfsm.png)
+
 ## Installation
 
 ### Pathogen
