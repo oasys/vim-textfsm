@@ -11,7 +11,7 @@ syntax case match
 
 sy match  tfComment "^\s*#.*"
 
-sy match  tfState   "\v^\w+$" nextgroup=tfRule,tfStateComment skipnl
+sy match  tfState   "\v^\w+\s*$" nextgroup=tfRule,tfStateComment skipnl
 sy region tfRule    contained start="\v^\s\s?\^" end="$"  end="\s->" contains=tfRuleVar,tfArrow nextgroup=tfRule,tfStateComment oneline skipnl skipwhite
 sy match  tfStateComment contained "^\s*#.*" nextgroup=tfRule,tfStateComment skipnl
 sy match  tfRuleVar contained "\v\$\w+"
@@ -27,7 +27,7 @@ sy match  tfVar     contained "\v\S+" nextgroup=tfRegex skipwhite
 sy match  tfOption  contained "\v((Filldown|Key|Required|List|Fillup),?)+" nextgroup=tfVar,tfRegex skipwhite
 sy match  tfRegex   contained "\v\(.*\)"hs=s+1,he=e-1
 
-sy region tfStateFold start="\v^\S+$" end="\v\n\n" fold transparent
+sy region tfStateFold start="\v^\S+\s*$" end="\v\n\s*\n" fold transparent
 
 hi def link tfValue PreProc
 hi def link tfState Statement
