@@ -3,7 +3,7 @@
 " Maintainer:  Jason Lavoie <jason@oasys.net>
 " URL:         https://github.com/oasys/vim-textfsm
 
-if exists("b:current_syntax")
+if exists('b:current_syntax')
   finish
 endif
 
@@ -43,4 +43,3 @@ hi def link tfArrow Function
 
 hi def link tfRule String
 hi def link tfRegex String
-
