@@ -22,7 +22,7 @@ sy match  tfAction  contained "\v(Next|Continue|Record|NoRecord|Clear(All)*)" ne
 sy match  tfAction  contained "\v(Next|Continue)\.(Record|NoRecord|Clear(All)*)" nextgroup=tfNext skipnl skipwhite
 sy match  tfAction  contained "\vError.*" nextgroup=tfRule skipnl
 
-sy match  tfValue   "\v^Value" nextgroup=tfOption,tfVar skipwhite
+sy match  tfValue   "\v^Value\s" nextgroup=tfOption,tfVar skipwhite
 sy match  tfVar     contained "\v\S+" nextgroup=tfRegex skipwhite
 sy match  tfOption  contained "\v((Filldown|Key|Required|List|Fillup),?)+" nextgroup=tfVar,tfRegex skipwhite
 sy match  tfRegex   contained "\v\(.*\)"hs=s+1,he=e-1
