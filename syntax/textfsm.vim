@@ -1,7 +1,7 @@
 " Vim syntax file
-" Language:    textfsm
+" Language:    textextfsmsm
 " Maintainer:  Jason Lavoie <jason@oasys.net>
-" URL:         https://github.com/oasys/vim-textfsm
+" URL:         https://github.com/oasys/vim-textextfsmsm
 
 if exists('b:current_syntax')
   finish
@@ -9,39 +9,41 @@ endif
 
 syntax case match
 
-sy match  tfComment "^\s*#.*"
+sy match  textfsmComment                "^\s*#.*"
 
-sy match  tfState   "\v^\w+\s*$" nextgroup=tfRule,tfStateComment skipnl
-sy region tfRule    contained start="\v^\s\s?\^" end="$"  end="\s->" contains=tfRuleVar,tfArrow nextgroup=tfRule,tfStateComment oneline skipnl skipwhite
-sy match  tfStateComment contained "^\s*#.*" nextgroup=tfRule,tfStateComment skipnl
-sy match  tfRuleVar contained "\v\$\w+"
-sy match  tfRuleVar contained "\v\$\{\w+\}"
-sy match  tfArrow   contained "->" nextgroup=tfAction,tfNext skipwhite
-sy match  tfNext    contained "\v\w+" skipnl
-sy match  tfAction  contained "\v(Next|Continue|Record|NoRecord|Clear(All)*)" nextgroup=tfNext skipnl skipwhite
-sy match  tfAction  contained "\v(Next|Continue)\.(Record|NoRecord|Clear(All)*)" nextgroup=tfNext skipnl skipwhite
-sy match  tfAction  contained "\vError.*" nextgroup=tfRule skipnl
+" State block(s)
+sy match  textfsmState                  "\v^\w+\s*$" nextgroup=textfsmRule,textfsmStateComment skipnl
+sy region textfsmRule         contained start="\v^\s\s?\^" end="$"  end="\s->" contains=textfsmRuleVar,textfsmArrow nextgroup=textfsmRule,textfsmStateComment skipnl skipwhite
+sy match  textfsmStateComment contained "^\s*#.*" nextgroup=textfsmRule,textfsmStateComment skipnl
+sy match  textfsmRuleVar      contained "\v\$\w+"
+sy match  textfsmRuleVar      contained "\v\$\{\w+\}"
+sy match  textfsmArrow        contained "->" nextgroup=textfsmAction,textfsmNext skipwhite
+sy match  textfsmNext         contained "\v\w+" skipnl
+sy match  textfsmAction       contained "\v(Next|Continue|Record|NoRecord|Clear(All)*)" nextgroup=textfsmNext skipnl skipwhite
+sy match  textfsmAction       contained "\v(Next|Continue)\.(Record|NoRecord|Clear(All)*)" nextgroup=textfsmNext skipnl skipwhite
+sy match  textfsmAction       contained "\vError.*" nextgroup=textfsmRule skipnl
 
-sy match  tfValue   "\v^Value\s" nextgroup=tfOption,tfVar skipwhite
-sy match  tfVar     contained "\v\S+" nextgroup=tfRegex skipwhite
-sy match  tfOption  contained "\v((Filldown|Key|Required|List|Fillup),?)+" nextgroup=tfVar,tfRegex skipwhite
-sy match  tfRegex   contained "\v\(.*\)"hs=s+1,he=e-1
+" Value definition(s)
+sy match  textfsmValue                  "\v^Value\s" nextgroup=textfsmOption,textfsmVar skipwhite
+sy match  textfsmVar          contained "\v\S+" nextgroup=textfsmRegex skipwhite
+sy match  textfsmOption       contained "\v((Filldown|Key|Required|List|Fillup),?)+" nextgroup=textfsmVar,textfsmRegex skipwhite
+sy match  textfsmRegex        contained "\v\(.*\)"hs=s+1,he=e-1
 
-sy region tfStateFold start="\v^\S+\s*$" end="\v\n\s*\n" fold transparent
+sy region textfsmStateFold              start="\v^\S+\s*$" end="\v\n\s*\n" fold transparent
 
-hi def link tfValue PreProc
-hi def link tfState Statement
-hi def link tfNext Statement
+hi def link textfsmValue PreProc
+hi def link textfsmState Statement
+hi def link textfsmNext Statement
 
-hi def link tfAction Constant
-hi def link tfOption Constant
+hi def link textfsmAction Constant
+hi def link textfsmOption Constant
 
-hi def link tfVar Identifier
-hi def link tfRuleVar Identifier
+hi def link textfsmVar Identifier
+hi def link textfsmRuleVar Identifier
 
-hi def link tfComment Comment
-hi def link tfStateComment Comment
-hi def link tfArrow Function
+hi def link textfsmComment Comment
+hi def link textfsmStateComment Comment
+hi def link textfsmArrow Function
 
-hi def link tfRule String
-hi def link tfRegex String
+hi def link textfsmRule String
+hi def link textfsmRegex String
