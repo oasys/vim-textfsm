@@ -27,6 +27,8 @@ sy match  tfVar     contained "\v\S+" nextgroup=tfRegex skipwhite
 sy match  tfOption  contained "\v((Filldown|Key|Required|List|Fillup),?)+" nextgroup=tfVar,tfRegex skipwhite
 sy match  tfRegex   contained "\v\(.*\)"hs=s+1,he=e-1
 
+sy region tfStateFold start="\v^\S+$" end="\v\n\n" fold transparent
+
 hi def link tfValue PreProc
 hi def link tfState Statement
 hi def link tfNext Statement
