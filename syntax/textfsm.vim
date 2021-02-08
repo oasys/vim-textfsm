@@ -11,15 +11,15 @@ syntax case match
 
 sy match  tfComment "^\s*#.*"
 
-sy match  tfState   "\v^\w+$" nextgroup=tfRule skipnl
-sy region tfRule    contained start="\v^\s\s?\^" end="$"  end="\s->" contains=tfRuleVar,tfArrow,tfStateComment nextgroup=tfArrow,tfRule oneline skipnl skipwhite
-sy match  tfRuleComment "^\s*#.*" nextgroup=tfRule skipnl
+sy match  tfState   "\v^\w+$" nextgroup=tfRule,tfStateComment skipnl
+sy region tfRule    contained start="\v^\s\s?\^" end="$"  end="\s->" contains=tfRuleVar,tfArrow nextgroup=tfRule,tfStateComment oneline skipnl skipwhite
+sy match  tfStateComment contained "^\s*#.*" nextgroup=tfRule,tfStateComment skipnl
 sy match  tfRuleVar contained "\v\$\w+"
 sy match  tfRuleVar contained "\v\$\{\w+\}"
 sy match  tfArrow   contained "->" nextgroup=tfAction,tfNext skipwhite
-sy match  tfNext    contained "\v\w+" nextgroup=tfRule skipnl skipwhite
-sy match  tfAction  contained "\v(Next|Continue|Record|NoRecord|Clear(All)*)" nextgroup=tfNext,tfRule skipnl skipwhite
-sy match  tfAction  contained "\v(Next|Continue)\.(Record|NoRecord|Clear(All)*)" nextgroup=tfNext,tfRule skipnl skipwhite
+sy match  tfNext    contained "\v\w+" skipnl
+sy match  tfAction  contained "\v(Next|Continue|Record|NoRecord|Clear(All)*)" nextgroup=tfNext skipnl skipwhite
+sy match  tfAction  contained "\v(Next|Continue)\.(Record|NoRecord|Clear(All)*)" nextgroup=tfNext skipnl skipwhite
 sy match  tfAction  contained "\vError.*" nextgroup=tfRule skipnl
 
 sy match  tfValue   "\v^Value" nextgroup=tfOption,tfVar skipwhite
@@ -38,7 +38,7 @@ hi def link tfVar Identifier
 hi def link tfRuleVar Identifier
 
 hi def link tfComment Comment
-hi def link tfRuleComment Comment
+hi def link tfStateComment Comment
 hi def link tfArrow Function
 
 hi def link tfRule String
