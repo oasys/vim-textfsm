@@ -21,7 +21,8 @@ sy match  textfsmArrow        contained "->" nextgroup=textfsmAction,textfsmNext
 sy match  textfsmNext         contained "\v\w+" skipnl
 sy match  textfsmAction       contained "\v<(Next|Continue|Record|NoRecord|Clear(All)*)>" nextgroup=textfsmNext skipnl skipwhite
 sy match  textfsmAction       contained "\v<(Next|Continue)\.(Record|NoRecord|Clear(All)*)>" nextgroup=textfsmNext skipnl skipwhite
-sy match  textfsmAction       contained "\vError.*" nextgroup=textfsmRule skipnl
+sy match  textfsmAction       contained "\v<Error>" nextgroup=textfsmErrMsg,textfsmRule skipnl skipwhite
+sy match  textfsmErrMsg       contained "\v\".*\""hs=s+1,he=e-1 nextgroup=textfsmRule,textfsmErrMsg skipnl skipwhite
 
 " Value definition(s)
 sy match  textfsmValue                  "\v^Value\s" nextgroup=textfsmOption,textfsmVar skipwhite
@@ -47,3 +48,4 @@ hi def link textfsmArrow Function
 
 hi def link textfsmRule String
 hi def link textfsmRegex String
+hi def link textfsmErrMsg String
