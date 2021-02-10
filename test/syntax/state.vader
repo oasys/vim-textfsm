@@ -1,0 +1,266 @@
+Given textfsm (Simple template):
+  Value ONE (\S+)
+  Value TWO (\S+)
+  Value THREE (\S+)
+
+  Start
+    ^${ONE}\s+${TWO}
+    ^${THREE}
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,1), 'textfsmValue'
+  AssertEqual SyntaxAt(4,1), ''
+  AssertEqual SyntaxAt(5,1), 'textfsmState'
+  AssertEqual SyntaxAt(6,3), 'textfsmRule'
+  AssertEqual SyntaxAt(6,6), 'textfsmRuleVar'
+  AssertEqual SyntaxAt(6,10), 'textfsmRule'
+  AssertEqual SyntaxAt(6,13), 'textfsmRuleVar'
+  AssertEqual SyntaxAt(7,6), 'textfsmRuleVar'
+
+-------------------------------------------------------------------------------
+
+Given textfsm (Multiple State Blocks):
+  Value ONE (\S+)
+  Value TWO (\S+)
+  Value THREE (\S+)
+
+  Start
+    ^${ONE}\s+${TWO} -> AnotherState
+
+  AnotherState
+    ^${THREE}.*
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(5,1), 'textfsmState'
+  AssertEqual SyntaxAt(6,3), 'textfsmRule'
+  AssertEqual SyntaxAt(7,1), ''
+  AssertEqual SyntaxAt(8,1), 'textfsmState'
+  AssertEqual SyntaxAt(9,3), 'textfsmRule'
+
+-------------------------------------------------------------------------------
+
+Given textfsm (State Actions):
+  Value ONE (\S+)
+
+  Start
+    ^${ONE} -> Next
+    ^${ONE} -> Continue
+    ^${ONE} -> Record
+    ^${ONE} -> NoRecord
+    ^${ONE} -> Clear
+    ^${ONE} -> ClearAll
+    ^${ONE} -> Error
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,1), 'textfsmValue'
+  AssertEqual SyntaxAt(3,1), 'textfsmState'
+  AssertEqual SyntaxAt(4,3), 'textfsmRule'
+  AssertEqual SyntaxAt(4,11), 'textfsmArrow'
+  AssertEqual SyntaxAt(4,14), 'textfsmAction'
+  AssertEqual SyntaxAt(5,3), 'textfsmRule'
+  AssertEqual SyntaxAt(5,11), 'textfsmArrow'
+  AssertEqual SyntaxAt(5,14), 'textfsmAction'
+  AssertEqual SyntaxAt(6,3), 'textfsmRule'
+  AssertEqual SyntaxAt(6,11), 'textfsmArrow'
+  AssertEqual SyntaxAt(6,14), 'textfsmAction'
+  AssertEqual SyntaxAt(7,3), 'textfsmRule'
+  AssertEqual SyntaxAt(7,11), 'textfsmArrow'
+  AssertEqual SyntaxAt(7,14), 'textfsmAction'
+  AssertEqual SyntaxAt(8,3), 'textfsmRule'
+  AssertEqual SyntaxAt(8,11), 'textfsmArrow'
+  AssertEqual SyntaxAt(8,14), 'textfsmAction'
+  AssertEqual SyntaxAt(9,3), 'textfsmRule'
+  AssertEqual SyntaxAt(9,11), 'textfsmArrow'
+  AssertEqual SyntaxAt(9,14), 'textfsmAction'
+  AssertEqual SyntaxAt(10,3), 'textfsmRule'
+  AssertEqual SyntaxAt(10,11), 'textfsmArrow'
+  AssertEqual SyntaxAt(10,14), 'textfsmAction'
+
+-------------------------------------------------------------------------------
+
+Given textfsm (Compound state Actions):
+  Value ONE (\S+)
+
+  Start
+    ^${ONE} -> Next.Record
+    ^${ONE} -> Next.NoRecord
+    ^${ONE} -> Next.Clear
+    ^${ONE} -> Next.ClearAll
+    ^${ONE} -> Continue.Record
+    ^${ONE} -> Continue.NoRecord
+    ^${ONE} -> Continue.Clear
+    ^${ONE} -> Continue.ClearAll
+
+Execute (syntax is good):
+  " Next.Record
+  AssertEqual SyntaxAt(4,3), 'textfsmRule'
+  AssertEqual SyntaxAt(4,11), 'textfsmArrow'
+  AssertEqual SyntaxAt(4,12), 'textfsmArrow'
+  AssertEqual SyntaxAt(4,14), 'textfsmAction'
+  AssertEqual SyntaxAt(4,18), 'textfsmAction'
+  AssertEqual SyntaxAt(4,19), 'textfsmAction'
+  " Next.NoRecord
+  AssertEqual SyntaxAt(5,3), 'textfsmRule'
+  AssertEqual SyntaxAt(5,11), 'textfsmArrow'
+  AssertEqual SyntaxAt(5,12), 'textfsmArrow'
+  AssertEqual SyntaxAt(5,14), 'textfsmAction'
+  AssertEqual SyntaxAt(5,18), 'textfsmAction'
+  AssertEqual SyntaxAt(5,19), 'textfsmAction'
+  " Next.Clear
+  AssertEqual SyntaxAt(6,3), 'textfsmRule'
+  AssertEqual SyntaxAt(6,11), 'textfsmArrow'
+  AssertEqual SyntaxAt(6,12), 'textfsmArrow'
+  AssertEqual SyntaxAt(6,14), 'textfsmAction'
+  AssertEqual SyntaxAt(6,18), 'textfsmAction'
+  AssertEqual SyntaxAt(6,19), 'textfsmAction'
+  " Next.ClearAll
+  AssertEqual SyntaxAt(7,3), 'textfsmRule'
+  AssertEqual SyntaxAt(7,11), 'textfsmArrow'
+  AssertEqual SyntaxAt(7,12), 'textfsmArrow'
+  AssertEqual SyntaxAt(7,14), 'textfsmAction'
+  AssertEqual SyntaxAt(7,18), 'textfsmAction'
+  AssertEqual SyntaxAt(7,19), 'textfsmAction'
+  AssertEqual SyntaxAt(7,24), 'textfsmAction'
+  " Continue.Record
+  AssertEqual SyntaxAt(8,3), 'textfsmRule'
+  AssertEqual SyntaxAt(8,11), 'textfsmArrow'
+  AssertEqual SyntaxAt(8,12), 'textfsmArrow'
+  AssertEqual SyntaxAt(8,14), 'textfsmAction'
+  AssertEqual SyntaxAt(8,22), 'textfsmAction'
+  AssertEqual SyntaxAt(8,23), 'textfsmAction'
+  " Continue.NoRecord
+  AssertEqual SyntaxAt(9,3), 'textfsmRule'
+  AssertEqual SyntaxAt(9,11), 'textfsmArrow'
+  AssertEqual SyntaxAt(9,12), 'textfsmArrow'
+  AssertEqual SyntaxAt(9,14), 'textfsmAction'
+  AssertEqual SyntaxAt(9,22), 'textfsmAction'
+  AssertEqual SyntaxAt(9,23), 'textfsmAction'
+  " Continue.Clear
+  AssertEqual SyntaxAt(10,3), 'textfsmRule'
+  AssertEqual SyntaxAt(10,11), 'textfsmArrow'
+  AssertEqual SyntaxAt(10,12), 'textfsmArrow'
+  AssertEqual SyntaxAt(10,14), 'textfsmAction'
+  AssertEqual SyntaxAt(10,22), 'textfsmAction'
+  AssertEqual SyntaxAt(10,23), 'textfsmAction'
+  " Continue.ClearAll
+  AssertEqual SyntaxAt(11,3), 'textfsmRule'
+  AssertEqual SyntaxAt(11,11), 'textfsmArrow'
+  AssertEqual SyntaxAt(11,12), 'textfsmArrow'
+  AssertEqual SyntaxAt(11,14), 'textfsmAction'
+  AssertEqual SyntaxAt(11,22), 'textfsmAction'
+  AssertEqual SyntaxAt(11,23), 'textfsmAction'
+  AssertEqual SyntaxAt(11,28), 'textfsmAction'
+
+-------------------------------------------------------------------------------
+
+Given textfsm (Error Action):
+  Value ONE (\S+)
+
+  Start
+    ^${ONE}\s+ -> Error
+    ^${ONE}\d+ -> Error "message"
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(4,3), 'textfsmRule'
+  AssertEqual SyntaxAt(4,14), 'textfsmArrow'
+  AssertEqual SyntaxAt(4,15), 'textfsmArrow'
+  AssertEqual SyntaxAt(4,17), 'textfsmAction'
+  AssertEqual SyntaxAt(5,3), 'textfsmRule'
+  AssertEqual SyntaxAt(5,14), 'textfsmArrow'
+  AssertEqual SyntaxAt(5,15), 'textfsmArrow'
+  AssertEqual SyntaxAt(5,17), 'textfsmAction'
+  AssertEqual SyntaxAt(5,24), 'textfsmErrMsg'
+
+-------------------------------------------------------------------------------
+
+Given textfsm (Next State):
+  Value ONE (\S+)
+
+  Start
+    ^${ONE}\s+ -> NextState
+    ^${ONE}\s+ -> Record NextState
+    ^${ONE}\s+ -> Continue.NoRecord NextState
+
+  NextState
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(4,17), 'textfsmNext'
+  AssertEqual SyntaxAt(5,17), 'textfsmAction'
+  AssertEqual SyntaxAt(5,24), 'textfsmNext'
+  AssertEqual SyntaxAt(6,17), 'textfsmAction'
+  AssertEqual SyntaxAt(6,25), 'textfsmAction'
+  AssertEqual SyntaxAt(6,26), 'textfsmAction'
+  AssertEqual SyntaxAt(6,35), 'textfsmNext'
+  AssertEqual SyntaxAt(8,1), 'textfsmState'
+
+-------------------------------------------------------------------------------
+
+Given textfsm (State block comments):
+  Value ONE (\S+)
+
+  # Standalone comment
+
+  # Comment before
+  # state block
+  Start
+    # Leading comment
+    ^${ONE}\s+
+    # Multi-line comment
+    # Multi-line comment
+    # Multi-line comment
+    ^${ONE}\s+
+    # Trailing Comment
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(3,1), 'textfsmComment'
+  AssertEqual SyntaxAt(5,1), 'textfsmComment'
+  AssertEqual SyntaxAt(6,1), 'textfsmComment'
+  AssertEqual SyntaxAt(7,1), 'textfsmState'
+  AssertEqual SyntaxAt(8,3), 'textfsmStateComment'
+  AssertEqual SyntaxAt(9,3), 'textfsmRule'
+  AssertEqual SyntaxAt(10,3), 'textfsmStateComment'
+  AssertEqual SyntaxAt(11,3), 'textfsmStateComment'
+  AssertEqual SyntaxAt(12,3), 'textfsmStateComment'
+  AssertEqual SyntaxAt(13,3), 'textfsmRule'
+  AssertEqual SyntaxAt(14,3), 'textfsmStateComment'
+
+-------------------------------------------------------------------------------
+
+Given textfsm (State block single char indentation):
+  Value ONE (\S+)
+
+  Start
+   # Comment
+   ^${ONE}\s+
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(4,2), 'textfsmStateComment'
+  AssertEqual SyntaxAt(5,2), 'textfsmRule'
+  AssertEqual SyntaxAt(3,1), 'textfsmState'
+
+-------------------------------------------------------------------------------
+
+Given textfsm (Variables in Rules):
+  Value ONE (\S+)
+  Value TWO (\d+)
+
+  Start
+   # preferred syntax with braces
+   ^${ONE}\s+${TWO}.*
+   # also allowed without braces
+   ^$TWO\s+$ONE.*
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,7), 'textfsmVar'
+  AssertEqual SyntaxAt(2,7), 'textfsmVar'
+  AssertEqual SyntaxAt(6,3), 'textfsmRuleVar'
+  AssertEqual SyntaxAt(6,5), 'textfsmRuleVar'
+  AssertEqual SyntaxAt(6,12), 'textfsmRuleVar'
+  AssertEqual SyntaxAt(6,14), 'textfsmRuleVar'
+  AssertEqual SyntaxAt(6,9), 'textfsmRule'
+  AssertEqual SyntaxAt(6,18), 'textfsmRule'
+  AssertEqual SyntaxAt(8,3), 'textfsmRuleVar'
+  AssertEqual SyntaxAt(8,4), 'textfsmRuleVar'
+  AssertEqual SyntaxAt(8,7), 'textfsmRule'
+  AssertEqual SyntaxAt(8,10), 'textfsmRuleVar'
+  AssertEqual SyntaxAt(8,14), 'textfsmRule'

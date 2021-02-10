@@ -1,0 +1,13 @@
+Given (simple textfsm template):
+  # comment
+  Value TEST (\S+)
+
+  Start
+    ^${TEST}\s+Match -> Record
+
+Execute (trigger filetype detection):
+  file simple.textfsm
+  edit
+
+Then (Detected simple.textfsm as a textfsm template):
+  AssertEqual &filetype, 'textfsm', 'check filetype is textfsm'

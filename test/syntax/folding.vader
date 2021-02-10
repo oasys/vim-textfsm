@@ -1,0 +1,16 @@
+Before:
+  set foldmethod=syntax
+
+Given textfsm (Folding state blocks):
+  Value ONE (\S+)
+
+  Start
+    ^some match
+    ^${ONE}
+
+Execute (works):
+  AssertEqual foldlevel(1), 0, 'value block'
+  AssertEqual foldlevel(2), 0, 'empty line'
+  AssertEqual foldlevel(3), 1, 'start of state block'
+  AssertEqual foldlevel(4), 1, 'inside state block'
+  AssertEqual foldlevel(6), 0, 'outside state block'

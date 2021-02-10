@@ -1,0 +1,124 @@
+Given textfsm (Simple template):
+  Value ONE (\S+)
+  Value TWO (\d+)
+
+  Start
+    ^${ONE}\s+${TWO}
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,1), 'textfsmValue'
+  AssertEqual SyntaxAt(1,7), 'textfsmVar'
+  AssertEqual SyntaxAt(1,12), 'textfsmRegex'
+  AssertEqual SyntaxAt(2,1), 'textfsmValue'
+  AssertEqual SyntaxAt(2,7), 'textfsmVar'
+  AssertEqual SyntaxAt(2,12), 'textfsmRegex'
+  AssertEqual SyntaxAt(4,1), 'textfsmState'
+  AssertEqual SyntaxAt(5,3), 'textfsmRule'
+  AssertEqual SyntaxAt(5,4), 'textfsmRuleVar'
+  AssertEqual SyntaxAt(5,6), 'textfsmRuleVar'
+  AssertEqual SyntaxAt(5,10), 'textfsmRule'
+  AssertEqual SyntaxAt(5,13), 'textfsmRuleVar'
+  AssertEqual SyntaxAt(5,15), 'textfsmRuleVar'
+
+-------------------------------------------------------------------------------
+
+Given textfsm (Value options):
+  Value Filldown ONE (\d+)
+  Value Key TWO (\d+)
+  Value Required THREE (\d+)
+  Value List FOUR (\d+)
+  Value Fillup FIVE (\d+)
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,1), 'textfsmValue'
+  AssertEqual SyntaxAt(1,7), 'textfsmOption'
+  AssertEqual SyntaxAt(1,16), 'textfsmVar'
+  AssertEqual SyntaxAt(2,1), 'textfsmValue'
+  AssertEqual SyntaxAt(2,7), 'textfsmOption'
+  AssertEqual SyntaxAt(2,11), 'textfsmVar'
+  AssertEqual SyntaxAt(3,1), 'textfsmValue'
+  AssertEqual SyntaxAt(3,7), 'textfsmOption'
+  AssertEqual SyntaxAt(3,16), 'textfsmVar'
+  AssertEqual SyntaxAt(4,1), 'textfsmValue'
+  AssertEqual SyntaxAt(4,7), 'textfsmOption'
+  AssertEqual SyntaxAt(4,12), 'textfsmVar'
+  AssertEqual SyntaxAt(5,1), 'textfsmValue'
+  AssertEqual SyntaxAt(5,7), 'textfsmOption'
+  AssertEqual SyntaxAt(5,14), 'textfsmVar'
+
+-------------------------------------------------------------------------------
+
+Given textfsm (Compound value options):
+  Value Key,Filldown ONE (\d+)
+  Value Required,List,Fillup TWO (\d+)
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,1), 'textfsmValue'
+  AssertEqual SyntaxAt(1,7), 'textfsmOption'
+  AssertEqual SyntaxAt(1,10), 'textfsmOption'
+  AssertEqual SyntaxAt(1,11), 'textfsmOption'
+  AssertEqual SyntaxAt(2,1), 'textfsmValue'
+  AssertEqual SyntaxAt(2,7), 'textfsmOption'
+  AssertEqual SyntaxAt(2,15), 'textfsmOption'
+  AssertEqual SyntaxAt(2,16), 'textfsmOption'
+  AssertEqual SyntaxAt(2,20), 'textfsmOption'
+  AssertEqual SyntaxAt(2,21), 'textfsmOption'
+
+-------------------------------------------------------------------------------
+
+Given textfsm (Value block with variable whitespace):
+  Value Required    ONE     (\d+)
+  Value             TWO     (\d+)
+  Value    Key      THREE   (\d+)
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,1), 'textfsmValue'
+  AssertEqual SyntaxAt(1,7), 'textfsmOption'
+  AssertEqual SyntaxAt(1,19), 'textfsmVar'
+  AssertEqual SyntaxAt(1,28), 'textfsmRegex'
+  AssertEqual SyntaxAt(2,1), 'textfsmValue'
+  AssertEqual SyntaxAt(2,19), 'textfsmVar'
+  AssertEqual SyntaxAt(2,28), 'textfsmRegex'
+  AssertEqual SyntaxAt(3,1), 'textfsmValue'
+  AssertEqual SyntaxAt(3,10), 'textfsmOption'
+  AssertEqual SyntaxAt(3,19), 'textfsmVar'
+
+-------------------------------------------------------------------------------
+
+Given textfsm (Value block with incorrect indentation):
+  Value ONE (\d+)
+   Value TWO (\d+)
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,1), 'textfsmValue'
+  AssertEqual SyntaxAt(1,7), 'textfsmVar'
+  AssertEqual SyntaxAt(2,2), ''
+  AssertEqual SyntaxAt(2,8), ''
+
+-------------------------------------------------------------------------------
+
+Given textfsm (Value block with comments):
+  # Initial comment
+  Value ONE (\d+)
+    # Indented comment
+  Value TWO (\d+)
+  # Multi-line comment
+  # Multi-line comment
+  # Multi-line comment
+  Value THREE (\S+)
+  # Another comment
+
+Execute (syntax is good):
+  AssertEqual SyntaxAt(1,1), 'textfsmComment'
+  AssertEqual SyntaxAt(1,3), 'textfsmComment'
+  AssertEqual SyntaxAt(2,1), 'textfsmValue'
+  AssertEqual SyntaxAt(3,3), 'textfsmComment'
+  AssertEqual SyntaxAt(3,5), 'textfsmComment'
+  AssertEqual SyntaxAt(4,1), 'textfsmValue'
+  AssertEqual SyntaxAt(4,7), 'textfsmVar'
+  AssertEqual SyntaxAt(5,1), 'textfsmComment'
+  AssertEqual SyntaxAt(6,3), 'textfsmComment'
+  AssertEqual SyntaxAt(7,1), 'textfsmComment'
+  AssertEqual SyntaxAt(8,1), 'textfsmValue'
+  AssertEqual SyntaxAt(9,1), 'textfsmComment'
+  AssertEqual SyntaxAt(9,3), 'textfsmComment'
