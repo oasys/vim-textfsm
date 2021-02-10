@@ -19,14 +19,14 @@ sy match  textfsmRuleVar      contained "\v\$\w+"
 sy match  textfsmRuleVar      contained "\v\$\{\w+\}"
 sy match  textfsmArrow        contained "->" nextgroup=textfsmAction,textfsmNext skipwhite
 sy match  textfsmNext         contained "\v\w+" skipnl
-sy match  textfsmAction       contained "\v(Next|Continue|Record|NoRecord|Clear(All)*)" nextgroup=textfsmNext skipnl skipwhite
-sy match  textfsmAction       contained "\v(Next|Continue)\.(Record|NoRecord|Clear(All)*)" nextgroup=textfsmNext skipnl skipwhite
+sy match  textfsmAction       contained "\v<(Next|Continue|Record|NoRecord|Clear(All)*)>" nextgroup=textfsmNext skipnl skipwhite
+sy match  textfsmAction       contained "\v<(Next|Continue)\.(Record|NoRecord|Clear(All)*)>" nextgroup=textfsmNext skipnl skipwhite
 sy match  textfsmAction       contained "\vError.*" nextgroup=textfsmRule skipnl
 
 " Value definition(s)
 sy match  textfsmValue                  "\v^Value\s" nextgroup=textfsmOption,textfsmVar skipwhite
 sy match  textfsmVar          contained "\v\S+" nextgroup=textfsmRegex skipwhite
-sy match  textfsmOption       contained "\v((Filldown|Key|Required|List|Fillup),?)+" nextgroup=textfsmVar,textfsmRegex skipwhite
+sy match  textfsmOption       contained "\v<((Filldown|Key|Required|List|Fillup),?)+>" nextgroup=textfsmVar,textfsmRegex skipwhite
 sy match  textfsmRegex        contained "\v\(.*\)"hs=s+1,he=e-1
 
 sy region textfsmStateFold              start="\v^\S+\s*$" end="\v\n\s*\n" fold transparent
