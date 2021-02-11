@@ -1,7 +1,7 @@
 " Vim syntax file
-" Language:    textextfsmsm
+" Language:    textfsm
 " Maintainer:  Jason Lavoie <jason@oasys.net>
-" URL:         https://github.com/oasys/vim-textextfsmsm
+" URL:         https://github.com/oasys/vim-textfsm
 
 if exists('b:current_syntax')
   finish
