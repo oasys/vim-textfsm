@@ -49,3 +49,5 @@ hi def link textfsmArrow Function
 hi def link textfsmRule String
 hi def link textfsmRegex String
 hi def link textfsmErrMsg String
+
+let b:current_syntax = 'textfsm'
